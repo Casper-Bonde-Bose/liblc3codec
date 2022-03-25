@@ -53,6 +53,28 @@ uint16_t Lc3Encoder_run_single(Lc3Encoder_t inst_ptr, const int16_t *x_s, uint16
 	return inst->run(x_s, byte_count, bytes, channelNr);
 }
 
+uint16_t Lc3Encoder_run_single_bitrate(Lc3Encoder_t inst_ptr, const int16_t *x_s, uint16_t *bytes_len,
+			       	       uint8_t *bytes, uint8_t channelNr, uint32_t bitrate)
+{
+	uint16_t byte_count;
+
+	if (inst_ptr == NULL) {
+		return 0;
+	}
+
+	Lc3Encoder *inst = static_cast<Lc3Encoder*>(inst_ptr);
+
+	byte_count = inst->lc3Config.getByteCountFromBitrate(bitrate);
+
+	if (byte_count > *bytes_len) {
+		return LC3_ENCODE_ERR_INVALID_BYTE_COUNT;
+	}
+	*bytes_len = byte_count;
+
+	return inst->run(x_s, byte_count, bytes, channelNr);
+}
+
+
 uint16_t Lc3Encoder_run_all(Lc3Encoder_t inst_ptr, const int16_t *x_s,
 		const uint16_t *byte_count_per_channel, uint8_t *bytes)
 {
@@ -64,3 +86,5 @@ uint16_t Lc3Encoder_run_all(Lc3Encoder_t inst_ptr, const int16_t *x_s,
 
 	return inst->run(x_s, byte_count_per_channel, bytes);
 }
+
+

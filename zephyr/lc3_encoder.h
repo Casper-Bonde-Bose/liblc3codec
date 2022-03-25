@@ -54,11 +54,29 @@ LC3_EXTERN_C uint16_t Lc3Encoder_run_single(Lc3Encoder_t inst_ptr, const int16_t
                                             uint8_t channelNr);
 
 /**
+ * Same as Lc3Encoder_run_single() but allows specifying the bit-rate rather than deriving
+ * it from the buffer size - as on some systems it is not pratical to access the frame duration
+ * of the codec configuration from the data path.
+ */
+LC3_EXTERN_C uint16_t Lc3Encoder_run_single_bitrate(Lc3Encoder_t inst_ptr, const int16_t* x_s,
+                                            uint16_t *byte_count, uint8_t* bytes,
+                                            uint8_t channelNr, uint32_t bitrate);
+
+/**
  * For detailed description please see underlying LC3 codec implementation.
  * @return One of LC3_DECODE_ERR values listed above
  */
 LC3_EXTERN_C uint16_t Lc3Encoder_run_all(Lc3Encoder_t inst_ptr, const int16_t* x_s,
                                          const uint16_t* byte_count_per_channel, uint8_t* bytes);
+
+/**
+ * Same as Lc3Encoder_run_all() but allows specifying the bit-rate rather than deriving
+ * it from the buffer size - as on some systems it is not pratical to access the frame duration
+ * of the codec configuration from the data path.
+ */
+LC3_EXTERN_C uint16_t Lc3Encoder_run_all_bitrate(Lc3Encoder_t inst_ptr, const int16_t *x_s,
+		const uint16_t *byte_count_per_channel, uint8_t *bytes, uint32_t bitrate);
+
 #undef LC3_EXTERN_C
 
 #endif /* LIB_LIBLC3CODEC_ZEPHYR_LC3_ENCODER_H_ */
